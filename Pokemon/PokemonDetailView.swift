@@ -53,9 +53,28 @@ struct PokemonDetailView: View {
     func stats() -> some View {
         VStack {
             Text("Stats")
+                .font(.title)
+            HStack {
+                Text("Height: \(self.viewModel.pokemonInfo?.height ?? 0)")
+                    .padding(.leading, 16)
+                Spacer()
+                Text("|")
+                Spacer()
+                Text("Weight: \(self.viewModel.pokemonInfo?.weight ?? 0)")
+                    .padding(.trailing, 16)
+            }
+            Spacer(minLength: 16)
+            Text("Type and Slot")
                 .font(.headline)
-            Text("Height: \(self.viewModel.pokemonInfo?.height ?? 0)")
-            Text("Weight: \(self.viewModel.pokemonInfo?.weight ?? 0)")
+            List {
+                ForEach(self.viewModel.pokemonInfo?.types ?? [Types]()) { type in
+                    HStack {
+                        Text(type.type.name)
+                        Spacer()
+                        Text("\(type.slot)")
+                    }
+                }
+            }
         }
         .frame(alignment: .leading)
     }

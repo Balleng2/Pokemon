@@ -14,10 +14,20 @@ struct PokemonInfo: Codable, Identifiable {
     let weight: Int
     let base_experience: Int
     let is_default: Bool
-//    let species: Species
+    let types: [Types]
     let sprites: Sprite
     
     struct Sprite: Codable {
         let front_default: String
+    }
+}
+
+struct Types: Identifiable, Codable  {
+    let id = UUID()
+    let slot: Int
+    let type: Type_Name
+    
+    struct Type_Name: Codable {
+        let name: String
     }
 }
