@@ -8,14 +8,27 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var viewModel = PokemonViewModel()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        NavigationView{
+            switch viewModel.appState {
+            case .loading:
+                Text("Loading...")
+            case .pokemon_loaded:
+                List {
+                    ForEach(viewModel.listOfPokemon) { pokemon in
+                        PokemoneListView(pokemon: pokemon)
+                    }
+                }
+                .navigationTitle("Pokedex")
+            case .error_loading:
+                Text("Something went wrong")
+            }
         }
-        .padding()
+        .task {
+            await viewModel.fetchList()
+        }
     }
 }
 
